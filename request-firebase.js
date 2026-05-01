@@ -15,7 +15,22 @@ window.addEventListener("load", () => {
   const db = getDatabase(app);
   const requestsRef = ref(db, `${firebasePaths.collection}/musicRequests`);
 
-  byId("sendRequestBtn")?.addEventListener("click", async () => {
+  const bookingClicksRef = ref(db, `${firebasePaths.collection}/bookingClicks`);
+
+byId("bookNextRideBtn")?.addEventListener("click", async () => {
+try {
+const clickRef = push(bookingClicksRef);
+
+await set(clickRef, {
+source: "requestPage",
+createdAt: new Date().toISOString(),
+promo: "SPECIAL10"
+});
+
+} catch (err) {
+console.error("Tracking failed", err);
+}
+});
     const title = clean(byId("songTitle")?.value);
     const artist = clean(byId("songArtist")?.value);
     const link = clean(byId("songLink")?.value);
